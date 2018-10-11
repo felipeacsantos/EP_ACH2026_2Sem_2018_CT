@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/felipeacsantos/EP_ACH2026_2Sem_2018_CT/issues"
   },
-  "homepage": "https://github.com/felipeacsantos/EP_ACH2026_2Sem_2018_CT#readme"
+  "homepage": "https://github.com/felipeacsantos/EP_ACH2026_2Sem_2018_CT#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
