@@ -1,0 +1,94 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <title>Tic Tac Toe</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col s12 m6 offset-m3">
+
+        <div class="buttons-screen">
+          <div class="row">
+            <div class="col s10 offset-s1">
+              <input type="text" id="roomName" placeholder="Room name">
+            </div>
+            <div class="col s12 center">
+              <div class="btn btn-large waves-effect create" id="create">Create room</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 center">
+              <h5 class="room-list-title">Rooms list</h5>
+            </div>
+            <div class="col s12 center">
+              <ul class="room-list">
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="game-screen">
+          <div class="row">
+            <div class="col s4">
+              <a href="">
+                <div class="btn back">Back</div>
+              </a>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="message">
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="board">
+                <table>
+                  <tr>
+                    <td data-row="0" data-col="0"></td>
+                    <td class="border-lr" data-row="0" data-col="1">
+                      <!-- <div class="check">X</div> -->
+                    </td>
+                    <td data-row="0" data-col="2"></td>
+                  </tr>
+                  <tr>
+                    <td class="border-tb" data-row="1" data-col="0"></td>
+                    <td class="border-lr border-tb" data-row="1" data-col="1"></td>
+                    <td class="border-tb" data-row="1" data-col="2"></td>
+                  </tr>
+                  <tr>
+                    <td data-row="2" data-col="0"></td>
+                    <td class="border-lr" data-row="2" data-col="1"></td>
+                    <td data-row="2" data-col="2"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(document).ready(function () {
+      Game();
+    })
+  </script>
+</body>
+
+</html>
