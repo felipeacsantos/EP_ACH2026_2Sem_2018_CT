@@ -1,0 +1,90 @@
+
+
+body{
+    background-color: #725a34;
+    font-family: 'Press Start 2P', cursive;
+    color:white
+}
+.container{
+    padding-top:5px;
+}
+.title{
+	background-color:#01579b;
+	color:white;
+	border-radius: 15px;
+}
+.btn{
+    background-color:#725a34;
+    border:1px solid white;
+    color:white;
+    border-radius:15px;
+}
+.btn:hover{
+    background-color:white;
+    color:#725a34;
+}
+.buttons-screen{
+	margin-top: 100px;
+
+    #roomName{
+        margin-top: 15px;
+        background-color: white;
+        color:black;
+    }
+    .room-list-title{
+        margin-top:25px;
+    }
+    .room-list{
+        .room{
+            border:1px solid white;
+            padding:15px;
+            margin-top:15px;
+            width: 100%;
+            display: block;
+        }
+    }
+}
+
+.game-screen{
+    
+    .board{
+        max-height: 400px;
+        max-width: 400px;
+        margin: 0 auto;
+        display: none;
+    }
+    .message{
+        color:white;
+        font-size: 28px;
+        text-align:center;
+        margin-top:5px;
+        height:90px;
+    }
+    .back{
+        display: none;
+        
+    }
+    td{
+        font-size: 30px;
+        padding-top: 30%; 
+        position: relative;   
+    }
+    .check{
+        font-size: 50px;
+        color:white;
+        position: absolute;
+        left: 0px;
+        padding: 33%;
+        top:0px;
+
+    }
+    td.border-lr{
+        border-left:1px solid white;
+        border-right:1px solid white;
+    }
+    td.border-tb{
+        border-top:1px solid white;
+        border-bottom:1px solid white;
+    }
+
+}
