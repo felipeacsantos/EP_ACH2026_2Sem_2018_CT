@@ -46,6 +46,13 @@ io.on('connection', function (socket) {
     let index = findRoom(roomId)
     rooms[index].game.check(data.type,data.row,data.col);
   })
+
+  socket.on('movement', (data) => {
+    console.error(data)
+    //let index = findRoom(roomId)
+    //rooms[index].game.check(data.type,data.row,data.col);
+  })
+
   socket.on('disconnect', function () {
 
     let index = findRoom(roomId)

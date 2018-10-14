@@ -101,17 +101,14 @@ const Jogo = function () {
             $("#"+casa_selecionada).html("");
             $("#"+casa_selecionada).removeClass("casa_selecionada");
 
+
             $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+this.id.replace("casa", "peca_preta")+"'/>");
+        
+            var movement_message = { original_address: peca_selecionada.substr(-3), destination_addresses: [this.id.substr(-3)]}
+            socket.emit('movement', movement_message);
+            
+            peca_selecionada = null;
         }
-        casa_selecionada = $(this.parentNode).attr("id");
-        $("#"+casa_selecionada).addClass("casa_selecionada");
-        $("#info_casa_selecionada").text(casa_selecionada);
-     
-        peca_selecionada = $("#"+casa_selecionada).children("img:first").attr("id");
-        if(peca_selecionada==null){
-            peca_selecionada = "NENHUMA PECA SELECIONADA";
-        }
-        $("#info_peca_selecionada").text(peca_selecionada.toString());
     })
 
     $('body').on('click', '.room', function () {
@@ -163,18 +160,7 @@ const Jogo = function () {
      
                 }
                 else if(classe == "casa_branca"){
-                    if(i < 3){
-                        $("#"+nome_casa).append("<img src='peca_preta.png' class='peca' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");
-                    }
-                    else
-                    if(i > 4){
-                        $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
-                    }
-
-                    if(i == 3 || i == 4){
-                        $("#"+nome_casa).addClass("empty");   
-                    }
-     
+                    $("#"+nome_casa).addClass("empty");
                 }
             }
         }

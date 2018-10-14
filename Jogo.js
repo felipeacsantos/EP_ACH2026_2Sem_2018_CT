@@ -55,6 +55,12 @@ module.exports = function (io, roomId) {
            }
         }
     }
+
+    this.movement = function (original_address, destination_addresses){
+        console.log(original_address);
+        console.log(destination_addresses);
+    }
+
     this.renderBoard = function () {
         io.sockets.in(roomId).emit('renderBoard', this.board)
     }
