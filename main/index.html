@@ -22,7 +22,7 @@
         <div class="buttons-screen">
           <div class="row">
             <div class="col s10 offset-s1">
-              <input type="text" id="roomName" placeholder="Nome da sala">
+              <input type="text" id="roomName" placeholder="Nome da sala" style="padding-left:10px">
             </div>
             <div class="col s12 center">
               <div class="btn btn-large waves-effect create" id="create">Criar sala</div>
@@ -57,12 +57,12 @@
           </div>
           <div class="row">
             <div class="col s12">
-              <div class="board">
+              <!-- <div class="board">
                 <table>
                   <tr>
                     <td data-row="0" data-col="0"></td>
                     <td class="border-lr" data-row="0" data-col="1">
-                      <!-- <div class="check">X</div> -->
+                      <div class="check">X</div>
                     </td>
                     <td data-row="0" data-col="2"></td>
                   </tr>
@@ -78,7 +78,15 @@
                   </tr>
                 </table>
               </div>
-            </div>
+            </div> -->
+            <div id="tabuleiro">
+    		    </div>
+    		    <div id="info">
+    		        <ul>
+    		            <li>Casa selecionada: <span id="info_casa_selecionada"/></li>
+    		            <li>Peca selecionada: <span id="info_peca_selecionada"/></li>
+    		        </ul>
+    		    </div>
           </div>
         </div>
       </div>

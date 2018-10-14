@@ -1,3 +1,29 @@
+#tabuleiro {
+  /*width:400px;*/
+  height: 400px;
+  border: solid 1px; }
+
+.linha {
+  height: 50px; }
+
+.casa {
+  width: 50px;
+  height: 100%;
+  float: left;
+  cursor: pointer; }
+
+.casa_branca {
+  background-color: #fff; }
+
+.casa_preta {
+  background-color: #484646; }
+
+.casa_selecionada {
+  background-color: #FF0000; }
+
+.peca {
+  width: 100%; }
+
 body {
   background-color: #78abc3bf;
   font-family: 'Press Start 2P', cursive;
