@@ -6,9 +6,11 @@ const Jogo = function () {
     var casa_selecionada = null;
     var peca_selecionada = null;
 
-    $('.board').hide();
+    loadInitialBoard();
+    $('#tabuleiro').hide();
     $('.back').hide();
     $('.message').hide();
+
     socket.on('rooms', rooms => {
         $('.room-list').html('')
         rooms.forEach(room => {
@@ -30,7 +32,7 @@ const Jogo = function () {
         $('.buttons-screen').remove();
         $('.message').show();
         $('.back').show();
-        $('.board').show();
+        $('#tabuleiro').show();
         $('.message').html('Oponente entrou')
     })
     socket.on('player left', () => {
@@ -76,19 +78,11 @@ const Jogo = function () {
         socket.emit('create room', { name: $('#roomName').val() });
 
     })
-    $('body').on('click', '.room', function () {
-
-        socket.emit('join room', { id: $(this).attr('data-room-id') })
-
-    })
-    $('td').click(function () {
-        //$(this).append('<div class="check">X</div>')
-
-        socket.emit('check', { type: type, row: $(this).attr('data-row'), col: $(this).attr('data-col') })
-    })
-
-    $(".casa").click(function(){
-        $("#"+casa_selecionada).removeClass("casa_selecionada");
+    
+    $('.casa').click(function(){
+        if(casa_selecionada != null){
+            $("#"+casa_selecionada).removeClass("casa_selecionada");
+        }
         casa_selecionada = $(this).attr("id");
         $("#"+casa_selecionada).addClass("casa_selecionada");
         $("#info_casa_selecionada").text(casa_selecionada);
@@ -99,6 +93,18 @@ const Jogo = function () {
         }
         $("#info_peca_selecionada").text(peca_selecionada.toString());
     })
+
+    $('body').on('click', '.room', function () {
+
+        socket.emit('join room', { id: $(this).attr('data-room-id') })
+
+    })
+    //$('td').click(function () {
+    //    //$(this).append('<div class="check">X</div>')
+
+    //    socket.emit('check', { type: type, row: $(this).attr('data-row'), col: $(this).attr('data-col') })
+    //})
+    
 
     function renderBoard(board) {
         // for (let i = 0; i < board.length; i++) {
@@ -111,42 +117,9 @@ const Jogo = function () {
         //         }
         //     }
         // }
+    }
+    function loadInitialBoard(){
         var i;
-        for (i=0; i<8; i++){
-            $("#tabuleiro").append("<div id='linha_"+i.toString()+"' class='linha' >");       
-     
-            for (j=0; j<8; j++){
-                var nome_casa ="casa_"+i.toString()+"_"+j.toString();
-                var classe = (i%2==0?(j%2==0?"casa_branca":"casa_preta"):(j%2!=0?"casa_branca":"casa_preta"));
-                $("#linha_"+i.toString()).append("<div id='"+nome_casa+"' class='casa "+classe+"' />");
-     
-                if(classe == "casa_preta"){
-                    if(i < 3){
-                        $("#"+nome_casa).append("<img src='peca_preta.png' class='peca' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");
-                    }
-                    else
-                    if(i > 4){
-                        $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
-                    }
-     
-                }
-            }
-        }
-    }
-    function resetBoard() {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-
-
-                $('td[data-row=' + i + '][data-col=' + j + ']').html('')
-
-            }
-        }
-    }
-}
-
-function showBoard(){
-    var i;
         for (i=0; i<8; i++){
             $("#tabuleiro").append("<div id='linha_"+i.toString()+"' class='linha' >");       
      
@@ -177,4 +150,15 @@ function showBoard(){
                 }
             }
         }
+    }
+    function resetBoard() {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+
+
+                $('td[data-row=' + i + '][data-col=' + j + ']').html('')
+
+            }
+        }
+    }
 }
