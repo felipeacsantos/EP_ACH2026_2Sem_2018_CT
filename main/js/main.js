@@ -79,11 +79,31 @@ const Jogo = function () {
 
     })
     
-    $('.casa').click(function(){
+    $('.peca').click(function(){
         if(casa_selecionada != null){
             $("#"+casa_selecionada).removeClass("casa_selecionada");
         }
-        casa_selecionada = $(this).attr("id");
+        casa_selecionada = $(this.parentNode).attr("id");
+        $("#"+casa_selecionada).addClass("casa_selecionada");
+        $("#info_casa_selecionada").text(casa_selecionada);
+     
+        peca_selecionada = $("#"+casa_selecionada).children("img:first").attr("id");
+        if(peca_selecionada==null){
+            peca_selecionada = "NENHUMA PECA SELECIONADA";
+        }
+        $("#info_peca_selecionada").text(peca_selecionada.toString());
+    })
+
+    $('.casa.empty').click(function(){
+        if(peca_selecionada != null){
+            var peca_selecionada_src = $("#"+peca_selecionada).attr("src");
+            var peca_selecionada_class = $("#"+peca_selecionada).attr("class");
+            $("#"+casa_selecionada).html("");
+            $("#"+casa_selecionada).removeClass("casa_selecionada");
+
+            $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+this.id.replace("casa", "peca_preta")+"'/>");
+        }
+        casa_selecionada = $(this.parentNode).attr("id");
         $("#"+casa_selecionada).addClass("casa_selecionada");
         $("#info_casa_selecionada").text(casa_selecionada);
      
@@ -130,11 +150,15 @@ const Jogo = function () {
      
                 if(classe == "casa_preta"){
                     if(i < 3){
-                        $("#"+nome_casa).append("<img src='peca_preta.png' class='peca' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");
+                        $("#"+nome_casa).append("<img src='peca_preta.png' class='peca peca_preta' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");
                     }
                     else
                     if(i > 4){
-                        $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
+                        $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca peca_branca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
+                    }
+
+                    if(i == 3 || i == 4){
+                        $("#"+nome_casa).addClass("empty");   
                     }
      
                 }
@@ -145,6 +169,10 @@ const Jogo = function () {
                     else
                     if(i > 4){
                         $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
+                    }
+
+                    if(i == 3 || i == 4){
+                        $("#"+nome_casa).addClass("empty");   
                     }
      
                 }
