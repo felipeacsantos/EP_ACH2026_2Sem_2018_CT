@@ -20,14 +20,14 @@ module.exports = function (io, roomId) {
     }
     this.newBoard = function () {
         return [
+            [0, 2, 0, 2, 0, 2, 0, 2],
+            [2, 0, 2, 0, 2, 0, 2, 0],
+            [0, 2, 0, 2, 0, 2, 0, 2],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0]
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0]
         ]
     }
     this.showPlayers = function () {
@@ -59,6 +59,15 @@ module.exports = function (io, roomId) {
     this.movement = function (original_address, destination_addresses){
         console.log(original_address);
         console.log(destination_addresses);
+
+        if(this.gameIsOver()==-1){
+            this.changeTurn();
+        }else{
+            let _this = this;
+            setTimeout(()=>{
+                this.init();
+            },3000)              
+        }
     }
 
     this.renderBoard = function () {
@@ -67,30 +76,14 @@ module.exports = function (io, roomId) {
     this.gameIsOver = function () {
         let ret = -1;
         //verify O win
-        if (this.board[0][0] == 1 && this.board[0][1] == 1 && this.board[0][2] == 1 ||
-            this.board[1][0] == 1 && this.board[1][1] == 1 && this.board[1][2] == 1 ||
-            this.board[2][0] == 1 && this.board[2][1] == 1 && this.board[2][2] == 1 ||
-            this.board[0][0] == 1 && this.board[1][0] == 1 && this.board[2][0] == 1 ||
-            this.board[0][1] == 1 && this.board[1][1] == 1 && this.board[2][1] == 1 ||
-            this.board[0][2] == 1 && this.board[1][2] == 1 && this.board[2][2] == 1 ||
-            this.board[0][0] == 1 && this.board[1][1] == 1 && this.board[2][2] == 1 ||
-            this.board[0][2] == 1 && this.board[1][1] == 1 && this.board[2][0] == 1) {
+        if (this.board.indexOf(2) == -1) {
                 ret = 1
             io.sockets.in(roomId).emit('gameIsOver', { type: 1 });
             //verify X win
-        } else if (this.board[0][0] == 2 && this.board[0][1] == 2 && this.board[0][2] == 2 ||
-            this.board[1][0] == 2 && this.board[1][1] == 2 && this.board[1][2] == 2 ||
-            this.board[2][0] == 2 && this.board[2][1] == 2 && this.board[2][2] == 2 ||
-            this.board[0][0] == 2 && this.board[1][0] == 2 && this.board[2][0] == 2 ||
-            this.board[0][1] == 2 && this.board[1][1] == 2 && this.board[2][1] == 2 ||
-            this.board[0][2] == 2 && this.board[1][2] == 2 && this.board[2][2] == 2 ||
-            this.board[0][0] == 2 && this.board[1][1] == 2 && this.board[2][2] == 2 ||
-            this.board[0][2] == 2 && this.board[1][1] == 2 && this.board[2][0] == 2) {
+        } else if (this.board.indexOf(1) == -1) {
                 ret = 1
             io.sockets.in(roomId).emit('gameIsOver', { type: 2 });
-        } else if(this.board[0][0] != 0 && this.board[0][1] != 0 && this.board[0][2] != 0 &&
-            this.board[1][0] != 0 && this.board[1][1] != 0 && this.board[1][2] != 0 &&
-            this.board[2][0] != 0 && this.board[2][1] != 0 && this.board[2][2] != 0) {
+        } else if(this.countPlaysWithoutRemoval >= 20) {
             ret = 1
             //draw
             io.sockets.in(roomId).emit('gameIsOver', { type: 0 });
