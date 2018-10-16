@@ -46,7 +46,7 @@ const Jogo = function () {
     })
     socket.on('my type', myType => {
         type = myType;
-
+        console.log('type:'+type);
     })
     socket.on('renderBoard', board => {
         renderBoard(board);
@@ -79,31 +79,41 @@ const Jogo = function () {
 
     })
     
-    $('.peca').click(function(){
-        if(casa_selecionada != null){
-            $("#"+casa_selecionada).removeClass("casa_selecionada");
+    $('body').on('click','.peca', function(){
+        //peca_selecionada = $("#"+casa_selecionada).children("img:first").attr("id");
+        peca_selecionada_local = this.id;
+        tipo_peca_selecionada = peca_selecionada_local.substr(0,6);
+        console.log(type);
+        console.log(tipo_peca_selecionada);
+        if((type == 1 && tipo_peca_selecionada == 'peca_b')
+            || (type == 2 && tipo_peca_selecionada == 'peca_p')){
+            if(casa_selecionada != null){
+                $("#"+casa_selecionada).removeClass("casa_selecionada");
+            }
+            casa_selecionada = $(this.parentNode).attr("id");
+            $("#"+casa_selecionada).addClass("casa_selecionada");
+            $("#info_casa_selecionada").text(casa_selecionada);
+         
+            peca_selecionada = peca_selecionada_local
+            if(peca_selecionada==null){
+                peca_selecionada = "NENHUMA PECA SELECIONADA";
+            }
+            $("#info_peca_selecionada").text(peca_selecionada.toString());
         }
-        casa_selecionada = $(this.parentNode).attr("id");
-        $("#"+casa_selecionada).addClass("casa_selecionada");
-        $("#info_casa_selecionada").text(casa_selecionada);
-     
-        peca_selecionada = $("#"+casa_selecionada).children("img:first").attr("id");
-        if(peca_selecionada==null){
-            peca_selecionada = "NENHUMA PECA SELECIONADA";
-        }
-        $("#info_peca_selecionada").text(peca_selecionada.toString());
     })
 
-    $('.casa.empty').click(function(){
+    $('body').on('click','.casa.empty', function(){
         if(peca_selecionada != null){
             var peca_selecionada_src = $("#"+peca_selecionada).attr("src");
+            var peca_selecionada_id = $("#"+peca_selecionada).attr("id");
             var peca_selecionada_class = $("#"+peca_selecionada).attr("class");
             $("#"+casa_selecionada).html("");
-            $("#"+casa_selecionada).removeClass("casa_selecionada");
+            $("#"+casa_selecionada).removeClass("casa_selecionada").addClass("empty");
 
 
-            $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+this.id.replace("casa", "peca_preta")+"'/>");
-        
+            $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+peca_selecionada_id.split("_")[0]+"_"+peca_selecionada_id.split("_")[1]+"_"+this.id.split("_")[1]+"_"+this.id.split("_")[2]+"'/>");
+            $(this).removeClass("empty");
+
             var movement_message = { original_address: peca_selecionada.substr(-3), destination_addresses: [this.id.substr(-3)]}
             socket.emit('movement', movement_message);
             
