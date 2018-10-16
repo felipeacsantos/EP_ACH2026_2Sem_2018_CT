@@ -2,6 +2,7 @@ const Jogo = function () {
     let roomId;
     var socket = io();
     let type;
+    let turn;
 
     var casa_selecionada = null;
     var peca_selecionada = null;
@@ -54,6 +55,8 @@ const Jogo = function () {
     })
     socket.on('turn', turn => {
         let message;
+        Jogo.turn = turn;
+        console.log(turn +" "+type);
         if (turn == type) {
             message = 'Sua vez'
         } else {
@@ -84,9 +87,13 @@ const Jogo = function () {
         peca_selecionada_local = this.id;
         tipo_peca_selecionada = peca_selecionada_local.substr(0,6);
         console.log(type);
+        console.log(Jogo.turn);
         console.log(tipo_peca_selecionada);
-        if((type == 1 && tipo_peca_selecionada == 'peca_b')
-            || (type == 2 && tipo_peca_selecionada == 'peca_p')){
+        if((Jogo.turn == type) && (
+                    (type == 1 && tipo_peca_selecionada == 'peca_b')
+                    || (type == 2 && tipo_peca_selecionada == 'peca_p')
+                )
+            ){
             if(casa_selecionada != null){
                 $("#"+casa_selecionada).removeClass("casa_selecionada");
             }
@@ -114,7 +121,7 @@ const Jogo = function () {
             $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+peca_selecionada_id.split("_")[0]+"_"+peca_selecionada_id.split("_")[1]+"_"+this.id.split("_")[1]+"_"+this.id.split("_")[2]+"'/>");
             $(this).removeClass("empty");
 
-            var movement_message = { original_address: peca_selecionada.substr(-3), destination_addresses: [this.id.substr(-3)]}
+            var movement_message = { original_address: peca_selecionada.substr(-3), destination_address: this.id.substr(-3)}
             socket.emit('movement', movement_message);
             
             peca_selecionada = null;

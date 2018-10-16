@@ -56,9 +56,12 @@ module.exports = function (io, roomId) {
         }
     }
 
-    this.movement = function (original_address, destination_addresses){
-        console.log(original_address);
-        console.log(destination_addresses);
+    this.movement = function (original_address, destination_address){
+        let o_address = original_address.split("_");
+        let d_address = destination_address.split("_");
+
+        console.error(o_address);
+        console.error(d_address);
 
         if(this.gameIsOver()==-1){
             this.changeTurn();
