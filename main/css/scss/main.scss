@@ -87,3 +87,21 @@ body{
     }
 
 }
+
+#title_player{
+    color:#01579b;
+    float:left;
+    font-size: 9px
+  }
+
+  .value_msg{
+    color:gray;
+    float:left;
+    font-size: 8px
+  }
+
+  ul:not(.browser-default)>li{
+      display: flex;
+      
+  }
+

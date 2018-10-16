@@ -5,12 +5,12 @@ const Jogo = function () {
     $('.board').hide();
     $('.back').hide();
     $('.message').hide();
+    $('chat').hide();
     socket.on('rooms', rooms => {
         $('.room-list').html('')
         rooms.forEach(room => {
             $('.room-list').append('<li class="room waves-effect" data-room-id="' + room.id + '">' + room.name + '</li>')
         })
-
         //socket.emit('my other event', { my: 'data' });
     });
     socket.on('room id', data => {
@@ -28,6 +28,7 @@ const Jogo = function () {
         $('.back').show();
         $('.board').show();
         $('.message').html('Oponente entrou')
+        chat(socket);
     })
     socket.on('player left', () => {
         $('.message').html('Oponente saiu\nEsperando outro jogador conectar')
@@ -42,10 +43,11 @@ const Jogo = function () {
         type = myType;
 
     })
+
     socket.on('renderBoard', board => {
         renderBoard(board);
-
     })
+
     socket.on('turn', turn => {
         let message;
         if (turn == type) {
@@ -70,7 +72,7 @@ const Jogo = function () {
     })
     $('#create').click(function () {
         socket.emit('create room', { name: $('#roomName').val() });
-
+ 
     })
     $('body').on('click', '.room', function () {
 
@@ -82,6 +84,23 @@ const Jogo = function () {
 
         socket.emit('check', { type: type, row: $(this).attr('data-row'), col: $(this).attr('data-col') })
     })
+
+    function chat(sok){
+        $('#input_chat').keydown(function(key){
+            if(key.keyCode === 13){
+                const m = $('#input_chat').val().trim();
+                
+                sok.emit('msg',m);
+                $('#messages').append('<li id = "line_msg"> <h4 id= "title_player"> Você :</h4> <h4 class = "value_msg">'+ m +' </h4></li>');
+                $('#input_chat').val("");
+                return false;
+            }       
+        })
+    } 
+
+    socket.on('msg', function(msg){
+        $('#messages').append('<li id= "line_msg"> <h4 id= "title_player"> Adversário :</h4> <h4 class = "value_msg">' + msg +' </h4></li>')
+    });
 
     function renderBoard(board) {
         for (let i = 0; i < board.length; i++) {
@@ -95,6 +114,7 @@ const Jogo = function () {
             }
         }
     }
+
     function resetBoard() {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {

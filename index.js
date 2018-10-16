@@ -10,14 +10,13 @@ const io = require('socket.io')(server);
 const shortid = require('shortid');
 const Jogo = require('./Jogo')
 
-
 let rooms = []
 io.on('connection', function (socket) {
   let roomId;
   let game;
   refreshRoomsList(io);
   socket.on('create room', room => {
-
+    
     roomId = shortid.generate();
     rooms.push({ id: roomId, name: room.name, players: 1 })
     refreshRoomsList(io);
@@ -39,10 +38,14 @@ io.on('connection', function (socket) {
 
     } else {
     }
-
   })
-  socket.on('check', (data) => {
 
+  socket.on('msg',msg =>{
+    //console.log(msg);
+    socket.broadcast.emit('msg',msg );
+  })
+
+  socket.on('check', (data) => {
     let index = findRoom(roomId)
     rooms[index].game.check(data.type,data.row,data.col);
   })
