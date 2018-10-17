@@ -56,12 +56,17 @@ module.exports = function (io, roomId) {
         }
     }
 
-    this.movement = function (original_address, destination_address){
+    this.movement = function (type, original_address, destination_address){
         let o_address = original_address.split("_");
         let d_address = destination_address.split("_");
 
+        this.board[o_address[0]][o_address[1]] = 0;
+        this.board[d_address[0]][d_address[1]] = type;
+
+        this.renderBoard();
         console.error(o_address);
         console.error(d_address);
+        console.error(this.board);
 
         if(this.gameIsOver()==-1){
             this.changeTurn();
@@ -80,16 +85,16 @@ module.exports = function (io, roomId) {
         let ret = -1;
         //verify O win
         if (this.board.indexOf(2) == -1) {
-                ret = 1
-            io.sockets.in(roomId).emit('gameIsOver', { type: 1 });
+                //ret = 1
+            //io.sockets.in(roomId).emit('gameIsOver', { type: 1 });
             //verify X win
         } else if (this.board.indexOf(1) == -1) {
-                ret = 1
-            io.sockets.in(roomId).emit('gameIsOver', { type: 2 });
+                //ret = 1
+            //io.sockets.in(roomId).emit('gameIsOver', { type: 2 });
         } else if(this.countPlaysWithoutRemoval >= 20) {
-            ret = 1
+            //ret = 1
             //draw
-            io.sockets.in(roomId).emit('gameIsOver', { type: 0 });
+            //io.sockets.in(roomId).emit('gameIsOver', { type: 0 });
         }
         return ret;
     }

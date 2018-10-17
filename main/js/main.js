@@ -117,7 +117,7 @@ const Jogo = function () {
     })
 
     $('body').on('click','.casa.empty', function(){
-        if(peca_selecionada != null){
+        if(validPlay(casa_selecionada,this.id)){
             var peca_selecionada_src = $("#"+peca_selecionada).attr("src");
             var peca_selecionada_id = $("#"+peca_selecionada).attr("id");
             var peca_selecionada_class = $("#"+peca_selecionada).attr("class");
@@ -128,7 +128,7 @@ const Jogo = function () {
             $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+peca_selecionada_id.split("_")[0]+"_"+peca_selecionada_id.split("_")[1]+"_"+this.id.split("_")[1]+"_"+this.id.split("_")[2]+"'/>");
             $(this).removeClass("empty");
 
-            var movement_message = { original_address: peca_selecionada.substr(-3), destination_address: this.id.substr(-3)}
+            var movement_message = { type: type, original_address: peca_selecionada.substr(-3), destination_address: this.id.substr(-3)}
             socket.emit('movement', movement_message);
             
             peca_selecionada = null;
@@ -147,19 +147,43 @@ const Jogo = function () {
     //})
     
 
-    function renderBoard(board) {
-        // for (let i = 0; i < board.length; i++) {
-        //     for (let j = 0; j < board[i].length; j++) {
-        //         if (board[i][j] == 0) {
+    function validPlay(original_address,destination_address){
+        var original_address = [parseInt(original_address.split("_")[1]),parseInt(original_address.split("_")[2])];
+        var destination_address = [parseInt(destination_address.split("_")[1]),parseInt(destination_address.split("_")[2])];
 
-        //         } else {
-        //             board[i][j] == 1 ? board[i][j] = 'O' : board[i][j] = 'X'
-        //             $('td[data-row=' + i + '][data-col=' + j + ']').append('<div class="check">' + board[i][j] + '</div>')
-        //         }
-        //     }
-        // }
+        var distance = [Math.abs(original_address[0]-destination_address[0]),Math.abs(original_address[1]-destination_address[1])];
+
+        var skipped_spot = [(original_address[0]+destination_address[0])/2,(original_address[1]+destination_address[1])/2] 
+
+        if(peca_selecionada != null && ((distance.equals([1,1])) || ((distance.equals([2,2]) && !($('#casa_'+skipped_spot[0]+'_'+skipped_spot[1])[0].classList.contains('empty'))))))
+            return true
+        return false;
+    }
+
+    function renderBoard(board) {
+        console.log(board);
+        $("#tabuleiro").html('');
+        var i;
+        for (i=0; i<8; i++){
+            $("#tabuleiro").append("<div id='linha_"+i.toString()+"' class='linha' >");       
+     
+            for (j=0; j<8; j++){
+                var nome_casa ="casa_"+i.toString()+"_"+j.toString();
+                var classe = (i%2==0?(j%2==0?"casa_branca":"casa_preta"):(j%2!=0?"casa_branca":"casa_preta"));
+                $("#linha_"+i.toString()).append("<div id='"+nome_casa+"' class='casa "+classe+"' />");
+     
+                if(board[i][j] == 2){
+                    $("#"+nome_casa).append("<img src='peca_preta.png' class='peca peca_preta' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");
+                }else if(board[i][j] == 1){
+                    $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca peca_branca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
+                }else{
+                    $("#"+nome_casa).addClass("empty");
+                }
+            }
+        }
     }
     function loadInitialBoard(){
+        $("#tabuleiro").html('');
         var i;
         for (i=0; i<8; i++){
             $("#tabuleiro").append("<div id='linha_"+i.toString()+"' class='linha' >");       
@@ -193,4 +217,35 @@ const Jogo = function () {
         $("#tabuleiro").html('');
         loadInitialBoard();   
     }
+
+
+    // Warn if overriding existing method
+    if(Array.prototype.equals)
+        console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+    // attach the .equals method to Array's prototype to call it on any array
+    Array.prototype.equals = function (array) {
+        // if the other array is a falsy value, return
+        if (!array)
+            return false;
+
+        // compare lengths - can save a lot of time 
+        if (this.length != array.length)
+            return false;
+
+        for (var i = 0, l=this.length; i < l; i++) {
+            // Check if we have nested arrays
+            if (this[i] instanceof Array && array[i] instanceof Array) {
+                // recurse into the nested arrays
+                if (!this[i].equals(array[i]))
+                    return false;       
+            }           
+            else if (this[i] != array[i]) { 
+                // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                return false;   
+            }           
+        }       
+        return true;
+    }
+    // Hide method from for-in loops
+    Object.defineProperty(Array.prototype, "equals", {enumerable: false});
 }
