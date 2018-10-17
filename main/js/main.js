@@ -155,8 +155,16 @@ const Jogo = function () {
 
         var skipped_spot = [(original_address[0]+destination_address[0])/2,(original_address[1]+destination_address[1])/2] 
 
-        if(peca_selecionada != null && ((distance.equals([1,1])) || ((distance.equals([2,2]) && !($('#casa_'+skipped_spot[0]+'_'+skipped_spot[1])[0].classList.contains('empty'))))))
+        
+
+        if(peca_selecionada != null && (distance.equals([1,1]))){
             return true
+        }else if((distance.equals([2,2]) && !($('#casa_'+skipped_spot[0]+'_'+skipped_spot[1])[0].classList.contains('empty')))){
+            var skipped_piece = $('#casa_'+skipped_spot[0]+'_'+skipped_spot[1]).children("img:first").attr("id").substr(0,6);
+            if((skipped_piece == 'peca_p' && type == 1)||(skipped_piece == 'peca_b' && type == 2)){
+                return true
+            }
+        }
         return false;
     }
 
