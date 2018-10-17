@@ -57,15 +57,23 @@ module.exports = function (io, roomId) {
     }
 
     this.movement = function (type, original_address, destination_address){
-        let o_address = original_address.split("_");
-        let d_address = destination_address.split("_");
+        let o_address = [parseInt(original_address.split("_")[0]),parseInt(original_address.split("_")[1])];
+        let d_address = [parseInt(destination_address.split("_")[0]),parseInt(destination_address.split("_")[1])];
 
         this.board[o_address[0]][o_address[1]] = 0;
         this.board[d_address[0]][d_address[1]] = type;
 
+        var distance = [Math.abs(o_address[0]-d_address[0]),Math.abs(o_address[1]-d_address[1])];
+        if(distance[0] > 1 && distance[1] > 1){
+            var skipped_spot = [(o_address[0]+d_address[0])/2,(o_address[1]+d_address[1])/2]
+            this.board[skipped_spot[0]][skipped_spot[1]] = 0;
+        }
+
+
         this.renderBoard();
         console.error(o_address);
         console.error(d_address);
+        console.error(distance);
         console.error(this.board);
 
         if(this.gameIsOver()==-1){
