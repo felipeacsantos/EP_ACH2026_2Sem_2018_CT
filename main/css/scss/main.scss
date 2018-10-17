@@ -32,6 +32,10 @@
     width: 100%;
 }
 
+.rotate_board {
+    transform: rotate(180deg);
+}
+
 body{
     background-color: #78abc3bf;
     font-family: 'Press Start 2P', cursive;

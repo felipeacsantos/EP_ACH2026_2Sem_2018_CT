@@ -48,6 +48,11 @@ const Jogo = function () {
     socket.on('my type', myType => {
         type = myType;
         console.log('type:'+type);
+        if(type == 2){
+            $('#tabuleiro').addClass("rotate_board");        
+        }else if(type == 1){
+            $('#tabuleiro').removeClass("rotate_board");
+        }
     })
     socket.on('renderBoard', board => {
         renderBoard(board);
@@ -75,7 +80,9 @@ const Jogo = function () {
                 $('.message').html('Você perdeu\nReiniciando jogo em 3 segundos')
             }
         }
-        resetBoard();
+        setTimeout(function() {
+            resetBoard();
+        }, 3000);
     })
     $('#create').click(function () {
         socket.emit('create room', { name: $('#roomName').val() });
@@ -183,13 +190,7 @@ const Jogo = function () {
         }
     }
     function resetBoard() {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-
-
-                $('td[data-row=' + i + '][data-col=' + j + ']').html('')
-
-            }
-        }
+        $("#tabuleiro").html('');
+        loadInitialBoard();   
     }
 }
