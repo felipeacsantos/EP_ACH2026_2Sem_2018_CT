@@ -160,9 +160,12 @@ const Jogo = function () {
 
         var skipped_spot = [(original_address[0]+destination_address[0])/2,(original_address[1]+destination_address[1])/2] 
 
-        
+        var peca_selecionada_class = $("#"+peca_selecionada).attr("class");
 
-        if(peca_selecionada != null && (distance.equals([1,1]))){
+        var isSpecial = false;
+        if(peca_selecionada_class.indexOf('dama') >= 0) isSpecial = true;
+
+        if(peca_selecionada != null && (distance.equals([1,1])) && (isSpecial || (original_address[0] > destination_address[0] && peca_selecionada.substr(0,6) == 'peca_b') || (original_address[0] < destination_address[0] && peca_selecionada.substr(0,6) == 'peca_p'))){
             return true
         }else if((distance.equals([2,2]) && !($('#casa_'+skipped_spot[0]+'_'+skipped_spot[1])[0].classList.contains('empty')))){
             var skipped_piece = $('#casa_'+skipped_spot[0]+'_'+skipped_spot[1]).children("img:first").attr("id").substr(0,6);
