@@ -49,9 +49,11 @@ const Jogo = function () {
         type = myType;
         console.log('type:'+type);
         if(type == 2){
-            $('#tabuleiro').addClass("rotate_board");        
+            $('#tabuleiro').addClass("rotate_board");
+            $('.peca').addClass("rotate_piece");        
         }else if(type == 1){
             $('#tabuleiro').removeClass("rotate_board");
+            $('.peca').removeClass("rotate_piece");
         }
     })
     socket.on('renderBoard', board => {
@@ -128,7 +130,10 @@ const Jogo = function () {
             $(this).html("<img src='"+peca_selecionada_src+"' class='"+peca_selecionada_class+"' id='"+peca_selecionada_id.split("_")[0]+"_"+peca_selecionada_id.split("_")[1]+"_"+this.id.split("_")[1]+"_"+this.id.split("_")[2]+"'/>");
             $(this).removeClass("empty");
 
-            var movement_message = { type: type, original_address: peca_selecionada.substr(-3), destination_address: this.id.substr(-3)}
+            var isSpecial = false;
+            if(peca_selecionada_class.indexOf('dama') >= 0) isSpecial = true;
+
+            var movement_message = { type: type, original_address: peca_selecionada.substr(-3), destination_address: this.id.substr(-3), isSpecial: isSpecial}
             socket.emit('movement', movement_message);
             
             peca_selecionada = null;
@@ -184,10 +189,20 @@ const Jogo = function () {
                     $("#"+nome_casa).append("<img src='peca_preta.png' class='peca peca_preta' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");
                 }else if(board[i][j] == 1){
                     $("#"+nome_casa).append("<img src='peca_branca.svg' class='peca peca_branca' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
+                }else if(board[i][j] == 20){
+                    $("#"+nome_casa).append("<img src='dama_preta.png' class='peca peca_preta dama' id='"+nome_casa.replace("casa", "peca_preta")+"'/>");   
+                }else if(board[i][j] == 10){
+                    $("#"+nome_casa).append("<img src='dama_branca.png' class='peca peca_branca dama' id='"+nome_casa.replace("casa", "peca_branca")+"'/>");   
                 }else{
                     $("#"+nome_casa).addClass("empty");
                 }
             }
+        }
+
+        if(type == 2){
+            $('.peca').addClass("rotate_piece");        
+        }else if(type == 1){
+            $('.peca').removeClass("rotate_piece");
         }
     }
     function loadInitialBoard(){

@@ -56,12 +56,17 @@ module.exports = function (io, roomId) {
         }
     }
 
-    this.movement = function (type, original_address, destination_address){
+    this.movement = function (type, original_address, destination_address, isSpecial){
         let o_address = [parseInt(original_address.split("_")[0]),parseInt(original_address.split("_")[1])];
         let d_address = [parseInt(destination_address.split("_")[0]),parseInt(destination_address.split("_")[1])];
 
+        var specialMarker = 1
+        if((d_address[0] == 0 && type == 1) || (d_address[0] == 7 && type == 2) || isSpecial){
+            specialMarker = 10;
+        }
+
         this.board[o_address[0]][o_address[1]] = 0;
-        this.board[d_address[0]][d_address[1]] = type;
+        this.board[d_address[0]][d_address[1]] = type*specialMarker;
 
         var distance = [Math.abs(o_address[0]-d_address[0]),Math.abs(o_address[1]-d_address[1])];
         if(distance[0] > 1 && distance[1] > 1){

@@ -51,7 +51,7 @@ io.on('connection', function (socket) {
     console.error(data);
     let index = findRoom(roomId)
     
-    rooms[index].game.movement(data.type, data.original_address, data.destination_address);
+    rooms[index].game.movement(data.type, data.original_address, data.destination_address, data.isSpecial);
     //let index = findRoom(roomId)
     //rooms[index].game.check(data.type,data.row,data.col);
   })
