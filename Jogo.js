@@ -2,6 +2,7 @@ module.exports = function (io, roomId) {
     this.players = []
     this.board;
     this.turn;
+    this.drawCount;
 
     this.init = function () {
         this.board = this.newBoard();
@@ -14,6 +15,7 @@ module.exports = function (io, roomId) {
         io.sockets.connected[this.players[0]].emit('my type', io.sockets.connected[this.players[0]].type)
         io.sockets.connected[this.players[1]].emit('my type', io.sockets.connected[this.players[1]].type)
         this.turn = 1;
+        this.drawCount = 0;
         // io.sockets.in(roomId).emit('game start')
         
         io.sockets.in(roomId).emit('turn', this.turn)
@@ -57,6 +59,8 @@ module.exports = function (io, roomId) {
     }
 
     this.movement = function (type, original_address, destination_address, isSpecial){
+        this.drawCount++;
+
         let o_address = [parseInt(original_address.split("_")[0]),parseInt(original_address.split("_")[1])];
         let d_address = [parseInt(destination_address.split("_")[0]),parseInt(destination_address.split("_")[1])];
 
@@ -72,6 +76,7 @@ module.exports = function (io, roomId) {
         if(distance[0] > 1 && distance[1] > 1){
             var skipped_spot = [(o_address[0]+d_address[0])/2,(o_address[1]+d_address[1])/2]
             this.board[skipped_spot[0]][skipped_spot[1]] = 0;
+            this.drawCount = 0;
         }
 
 
@@ -96,20 +101,33 @@ module.exports = function (io, roomId) {
     }
     this.gameIsOver = function () {
         let ret = -1;
-        //verify O win
-        if (this.board.indexOf(2) == -1) {
-                //ret = 1
-            //io.sockets.in(roomId).emit('gameIsOver', { type: 1 });
-            //verify X win
-        } else if (this.board.indexOf(1) == -1) {
-                //ret = 1
-            //io.sockets.in(roomId).emit('gameIsOver', { type: 2 });
-        } else if(this.countPlaysWithoutRemoval >= 20) {
-            //ret = 1
-            //draw
-            //io.sockets.in(roomId).emit('gameIsOver', { type: 0 });
+        //verify 1 win
+        if (this.isInMatrix(2) == false && this.isInMatrix(20) == false) {
+            console.error("player 1 wins");
+            ret = 1
+            io.sockets.in(roomId).emit('gameIsOver', { type: 1 });
+        //verify 2 win
+        } else if (this.isInMatrix(1) == false && this.isInMatrix(10) == false) {
+            console.error("player 2 wins");
+            ret = 1
+            io.sockets.in(roomId).emit('gameIsOver', { type: 2 });
+        } else if(this.drawCount >= 20) {
+            console.error("it's a draw");
+            ret = 1
+            io.sockets.in(roomId).emit('gameIsOver', { type: 0 });
         }
         return ret;
     }
+
+    this.isInMatrix = function(item){
+        for (var i = 0; i < this.board.length; i++) {
+            // This if statement depends on the format of your array
+            for(var j = 0; j < this.board[i].length; j++){
+                if (this.board[i][j] == item)return true;   // Found it
+            }
+        }
+        return false;   // Not found
+    }
+
     this.init();
 }
