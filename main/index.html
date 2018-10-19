@@ -17,7 +17,7 @@
       </div>
     </div> 
     <div class="row">
-      <div class="col s12 m6 offset-m3">
+      <div class="col s12 m6 offset-m3" style="margin-left: 0px !important; width:100% !important;">
 
         <div class="buttons-screen">
           <div class="row">
@@ -56,50 +56,32 @@
             </div>
           </div>
           <div class="row">
-            <div class="col s12" style="text-align: -webkit-center;">
-              <!-- <div class="board">
-                <table>
-                  <tr>
-                    <td data-row="0" data-col="0"></td>
-                    <td class="border-lr" data-row="0" data-col="1">
-                      <div class="check">X</div>
-                    </td>
-                    <td data-row="0" data-col="2"></td>
-                  </tr>
-                  <tr>
-                    <td class="border-tb" data-row="1" data-col="0"></td>
-                    <td class="border-lr border-tb" data-row="1" data-col="1"></td>
-                    <td class="border-tb" data-row="1" data-col="2"></td>
-                  </tr>
-                  <tr>
-                    <td data-row="2" data-col="0"></td>
-                    <td class="border-lr" data-row="2" data-col="1"></td>
-                    <td data-row="2" data-col="2"></td>
-                  </tr>
-                </table>
-              </div>
-            </div> -->
-            <div id="tabuleiro">
-    		    </div>
-    		    <div id="info">
+            <div class="col s6" style="text-align: -webkit-center;">
+              <div id="tabuleiro">
+    		      </div>
+    		      <div id="info" style="display: none !important;">
     		        <ul>
     		            <li>Casa selecionada: <span id="info_casa_selecionada"/></li>
     		            <li>Peca selecionada: <span id="info_peca_selecionada"/></li>
     		        </ul>
-    		    </div>
-          </div>
+    		      </div>
+            </div>
+            <div class="col s6 m6 offset-m3" style="margin-left: 0px !important;">
+              <div class  = "chatbox" style="margin: 0px !important; height: 400px !important;">
+                <div class = "chatlogs" style="height: 300px !important;">      
+                </div>
+                <div class = "chat-form">
+                    <textarea id = "input_chat"></textarea>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>
+    
   </div>
   </div>
-  <div class  = "chatbox">
-		<div class = "chatlogs">			
-		</div>
-		<div class = "chat-form">
-			<textarea id = "input_chat"></textarea>
-		</div>
-	</div>
+  
   <script src="js/socket.io.js"></script>
   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
   <script src="js/materialize.min.js"></script>
