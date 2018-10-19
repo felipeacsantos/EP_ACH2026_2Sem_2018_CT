@@ -11,6 +11,7 @@ const Jogo = function () {
     $('#tabuleiro').hide();
     $('.back').hide();
     $('.message').hide();
+    $('.chatbox').hide();
 
     socket.on('rooms', rooms => {
         $('.room-list').html('')
@@ -34,7 +35,9 @@ const Jogo = function () {
         $('.message').show();
         $('.back').show();
         $('#tabuleiro').show();
-        $('.message').html('Oponente entrou')
+        $('.chatbox').show();
+        $('.message').html('Oponente entrou');
+        chat(socket);
     })
     socket.on('player left', () => {
         $('.message').html('Oponente saiu\nEsperando outro jogador conectar')
@@ -274,4 +277,23 @@ const Jogo = function () {
     }
     // Hide method from for-in loops
     Object.defineProperty(Array.prototype, "equals", {enumerable: false});
+
+    function chat(sok){
+        $('#input_chat').keydown(function(key){
+            if(key.keyCode === 13){
+                 const m = $('#input_chat').val().trim();
+                 sok.emit('msg',m, socket.id);
+                
+                $('.chatlogs').append('<div class = "chat self"><div class = "user-photo"></div><p class = "chat-message">'+ m+'</p></div>');
+                $('#input_chat').val("");
+                return false;
+            }       
+        })
+    }
+    
+    socket.on('msg', function(msg, id){
+        if(socket.id !== id){
+            $('.chatlogs').append('<div class = "chat friend"><div class = "user-photo"></div><p class = "chat-message">'+ msg+'</p></div>');
+        }
+    });
 }

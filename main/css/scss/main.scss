@@ -127,3 +127,102 @@ body{
     }
 
 }
+
+//css do chatbox
+
+.chatbox{
+    position: relative ! important;
+      width:300px !important;
+      min-width: 300px !important; 
+      height:300px !important;
+      background: #fff !important;
+      padding:25px !important;
+      margin: 20px auto !important;
+    box-shadow:0 3px #ccc !important;
+    float: left  !important ;  
+  }
+  
+  
+  .chatlogs::-webkit-scrollbar{
+      width:10px !important;
+  }
+  
+  .chatlogs::-webkit-scrollbar-thumb{
+      border-radius: 5px !important;
+      background: rgba(0,0,0,.1)!important;
+  }
+  
+  .chatbox{
+      width:500px !important;
+      min-width: 390px !important; 
+      height:600px !important;
+      background: #fff !important;
+      padding:25px !important;
+      margin: 20px auto !important;
+      box-shadow:0 3px #ccc !important;
+  }
+  
+  .chatlogs{
+      padding:10px !important;
+      width: 100% !important;
+      height: 450px !important;
+      overflow-x: hidden !important;
+      overflow-y: scroll !important; 
+  }
+  
+  .chat{
+      display: flex !important;
+      flex-flow: row wrap !important;
+      align-items: flex-start !important;
+      margin-bottom: 10px !important;
+  }
+  
+  .chat .user-photo{
+      width: 100px !important;
+      height: 60px !important;
+      background-color:  #ccc !important;
+    border-radius:10% !important;
+    vertical-align: 30px !important;
+  }
+  
+  .chat .chat-message{
+      width:70% !important;
+      padding: 15px !important;
+      margin:5px 10px 0 !important;
+      background:#1ddced !important;
+      border-radius:10px !important;
+      color:#fff !important;
+      font-size:12px !important;
+  }
+  
+  .friend .chat-message{
+      background: #1adda4 !important;
+  }
+  
+  .self .chat-message{
+      background: #1ddced !important;
+      order:-1 !important;
+  }
+  
+  .chat-form textarea{
+      background: #fbfbfb !important;
+      width: 100% !important;
+      height: 60px !important;
+      border : 2px solid #eee !important;
+      border-radius: 3px !important;
+      resize: none !important;
+      padding-top: 20px !important;
+      font-size: 10px !important; 
+      color:#333 !important;
+  }
+  
+  .chat-form textarea:focus{
+      background: #fff;
+  }
+  
+  .chat .user-photo{
+      width: 60px;
+      height: 60px;
+      background-color: white !important;
+      border-radius:50%;
+  }

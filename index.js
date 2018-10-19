@@ -41,6 +41,12 @@ io.on('connection', function (socket) {
     }
 
   })
+
+  socket.on('msg',function(msg, id){
+    //socket.broadcast.emit('msg',msg );
+    io.sockets.in(roomId).emit('msg',msg, id);
+  })
+
   socket.on('check', (data) => {
 
     let index = findRoom(roomId)
@@ -80,8 +86,8 @@ function findRoom(roomId){
   return rooms.findIndex(room => {
     return room.id == roomId;
   })
-
 }
 
-
-server.listen(port);
+server.listen(port, function(){
+  console.log("servidor criado na porta : " + port);
+});
